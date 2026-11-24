@@ -1,6 +1,6 @@
 package me.voidxwalker.anchiale.mixin;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import me.voidxwalker.anchiale.Anchiale;
 import net.minecraft.server.integrated.IntegratedServer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,12 +10,12 @@ import java.util.concurrent.Future;
 
 @Mixin(IntegratedServer.class)
 public abstract class IntegratedServerMixin {
-    @WrapWithCondition(method = "stopRunning", at = @At(value = "INVOKE", target = "Lcom/google/common/util/concurrent/Futures;getUnchecked(Ljava/util/concurrent/Future;)Ljava/lang/Object;"))
-    public boolean fastReset(Future<?> e) {
+    @WrapOperation(method = "stop", at = @At(value = "INVOKE", target = "Lcom/google/common/util/concurrent/Futures;getUnchecked(Ljava/util/concurrent/Future;)Ljava/lang/Object;"))
+    public Object fastReset(Future<?> e, Operation<Object> original) {
         if (Anchiale.fastReset) {
             Anchiale.LOGGER.info("Exiting world without waiting for server tasks to finish");
-            return false;
+            return null;
         }
-        return true;
+        return original.call(e);
     }
 }

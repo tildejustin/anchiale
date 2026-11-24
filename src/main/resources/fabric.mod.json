@@ -3,7 +3,7 @@
   "id": "anchiale",
   "version": "${version}",
   "name": "Anchiale",
-  "description": "Adds a faster way to exit worlds in 1.8. Use the Quit to Title button to exit the current world without waiting for the server tasks queue to complete.",
+  "description": "Adds a faster way to exit worlds. Use the Quit to Title button to exit the current world without waiting for the server tasks queue to complete.",
   "authors": [
     "RedLime",
     "voidxwalker",
@@ -12,13 +12,19 @@
     "KingContaria",
     "tildejustin"
   ],
+  "contact": {
+    "homepage": "https://github.com/Minecraft-Java-Edition-Speedrunning/anchiale",
+    "sources": "https://github.com/Minecraft-Java-Edition-Speedrunning/anchiale",
+    "issues": "https://github.com/Minecraft-Java-Edition-Speedrunning/anchiale/issues"
+  },
+  "icon": "assets/anchiale/icon.png",
   "license": "MIT",
   "environment": "*",
   "mixins": [
     "anchiale.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15",
-    "minecraft": "1.8.x"
+    "minecraft": ">1.7.10 <1.9",
+    "fabricloader": ">=0.15"
   }
 }

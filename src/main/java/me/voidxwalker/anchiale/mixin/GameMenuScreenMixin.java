@@ -1,57 +1,56 @@
 package me.voidxwalker.anchiale.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Share;
-import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import me.voidxwalker.anchiale.Anchiale;
-import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.menu.GameMenuScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameMenuScreen.class)
 public abstract class GameMenuScreenMixin extends Screen {
-    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;<init>(IIILjava/lang/String;)V", ordinal = 0), index = 1)
-    private int titleScreenX(int x, @Share("originalX") LocalIntRef originalX) {
-        originalX.set(x);
-        return x;
-    }
+    @Unique
+    private static final int id = 1507;
 
-    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget;<init>(IIILjava/lang/String;)V", ordinal = 0), index = 2)
-    private int titleScreenY(int y, @Share("originalY") LocalIntRef originalY) {
-        originalY.set(y);
-        return y;
-    }
+    @ModifyExpressionValue(method = "init", at = @At(value = "NEW", target = "net/minecraft/client/gui/widget/ButtonWidget", ordinal = 0))
+    private ButtonWidget addAnchialeButton(ButtonWidget original) {
+        if (!this.minecraft.isSingleplayer()) {
+            return original;
+        }
 
-    @Inject(method = "init", at = @At("TAIL"))
-    private void addAnchialeButton(CallbackInfo ci, @Share("originalX") LocalIntRef originalX, @Share("originalY") LocalIntRef originalY) {
-        int x, y;
+        int x, y, height = 20, width;
         switch (Anchiale.buttonLocation) {
             case CENTER:
-                x = originalX.get();
-                y = originalY.get() + 24;
+                width = original.getWidth();
+                x = original.x;
+                y = original.y + height + 4;
                 break;
             case BOTTOM_RIGHT:
             default:
-                x = this.width - 104;
-                y = this.height - 24;
+                width = 100;
+                x = this.width - width - 4;
+                y = this.height - height - 4;
                 break;
         }
-        if (this.client.isInSingleplayer()) {
-            this.buttons.add(new ButtonWidget(1507, x, y, Anchiale.buttonLocation == Anchiale.ButtonLocation.BOTTOM_RIGHT ? 100 : 200, 20, "Quit to Title"));
+        ButtonWidget button = new ButtonWidget(id, x, y, width, height, "Quit to Title");
+        if (Anchiale.buttonLocation == Anchiale.ButtonLocation.HIDE) {
+            button.visible = false;
         }
+        this.buttons.add(button);
+        return original;
     }
 
     @Inject(method = "buttonClicked", at = @At("HEAD"))
     private void onMenuQuitWorldClicked(ButtonWidget button, CallbackInfo ci) {
-        if (button.id == 1507) {
+        if (button.id == id) {
             Anchiale.fastReset = true;
             button.id = 1;
         }
     }
 
-    @Inject(method = "buttonClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;<init>()V"))
+    @Inject(method = "buttonClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setWorld(Lnet/minecraft/client/world/ClientWorld;)V", shift = At.Shift.AFTER))
     private void fastResetFalse(CallbackInfo ci) {
         Anchiale.fastReset = false;
     }
