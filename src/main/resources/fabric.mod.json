@@ -20,11 +20,16 @@
   "icon": "assets/anchiale/icon.png",
   "license": "MIT",
   "environment": "*",
+  "custom": {
+    "speedrunapi": {
+      "config": "me.voidxwalker.anchiale.AnchialeConfig"
+    }
+  },
   "mixins": [
     "anchiale.mixins.json"
   ],
   "depends": {
-    "minecraft": ">1.7.10 <1.9",
+    "minecraft": ">1.7.10 <1.13",
     "fabricloader": ">=0.15"
   }
 }

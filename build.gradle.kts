@@ -31,6 +31,7 @@ dependencies {
     minecraft(libs.minecraft)
     mappings(ploceus.featherMappings(libs.versions.feather.build.get()))
     modImplementation(libs.fabric.loader)
+    modImplementation(libs.speedrunapi)
 }
 
 tasks.named<JavaCompile>("compileJava") {

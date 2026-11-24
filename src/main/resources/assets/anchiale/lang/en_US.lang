@@ -1,0 +1,6 @@
+anchiale.menu.quitWorld=Quit to Title
+speedrunapi.config.anchiale.option.buttonLocation=Button Location
+speedrunapi.config.anchiale.option.buttonLocation.description=Sets the location of the Quit to Title button on the pause menu.
+speedrunapi.config.anchiale.option.buttonLocation.value.BOTTOM_RIGHT=Bottom Right
+speedrunapi.config.anchiale.option.buttonLocation.value.CENTER=Center
+speedrunapi.config.anchiale.option.buttonLocation.value.HIDDEN=Hide

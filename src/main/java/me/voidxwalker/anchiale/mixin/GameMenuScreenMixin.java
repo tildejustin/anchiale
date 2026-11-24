@@ -1,10 +1,11 @@
 package me.voidxwalker.anchiale.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import me.voidxwalker.anchiale.Anchiale;
+import me.voidxwalker.anchiale.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.menu.GameMenuScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,7 +22,7 @@ public abstract class GameMenuScreenMixin extends Screen {
         }
 
         int x, y, height = 20, width;
-        switch (Anchiale.buttonLocation) {
+        switch (Anchiale.config.buttonLocation) {
             case CENTER:
                 width = original.getWidth();
                 x = original.x;
@@ -34,8 +35,8 @@ public abstract class GameMenuScreenMixin extends Screen {
                 y = this.height - height - 4;
                 break;
         }
-        ButtonWidget button = new ButtonWidget(id, x, y, width, height, "Quit to Title");
-        if (Anchiale.buttonLocation == Anchiale.ButtonLocation.HIDE) {
+        ButtonWidget button = new ButtonWidget(id, x, y, width, height, I18n.translate("anchiale.menu.quitWorld"));
+        if (Anchiale.config.buttonLocation == AnchialeConfig.ButtonLocation.HIDE) {
             button.visible = false;
         }
         this.buttons.add(button);

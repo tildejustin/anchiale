@@ -4,10 +4,12 @@ feather_build = "2"
 fabric_loader = "0.20.1"
 loom = "1.19-SNAPSHOT"
 ploceus = "1.19-SNAPSHOT"
+speedrunapi = "c6c47b82a0"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
+speedrunapi = { module = "com.github.contariaa:SpeedrunAPI", version.ref = "speedrunapi" }
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "loom" }
